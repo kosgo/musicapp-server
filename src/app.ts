@@ -1,15 +1,12 @@
 import express, { Express } from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 
-import environments from '@config/environments';
+import { environments } from './config';
 
 class App {
   private readonly app: Express;
 
   constructor() {
-    dotenv.config();
-
     this.app = express();
   }
 
@@ -21,7 +18,9 @@ class App {
   public run(): void {
     this.setGlobalMiddlewares();
 
-    this.app.listen(environments.PORT);
+    this.app.listen(environments.PORT, () =>
+      console.log(`Server is running on port ${environments.PORT}`)
+    );
   }
 }
 

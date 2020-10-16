@@ -3,11 +3,10 @@ dotenv.config();
 
 import App from './app';
 
-function bootstrap() {
-
+(async function bootstrap() {
   const app = new App();
 
-  app.run();
-}
+  await app.run();
 
-bootstrap();
+  process.on('SIGTERM', () => app.exit());
+})();

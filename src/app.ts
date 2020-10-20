@@ -19,7 +19,7 @@ class App {
   }
 
   private setupControllers(): void {
-    this.app.use(authController.register());
+    this.app.use('/auth', authController.register());
   }
 
   private setupProtectedControllers(): void {
@@ -28,9 +28,12 @@ class App {
 
   public async run(): Promise<void> {
     this.dbConnection = await connectDb();
+
     this.setGlobalMiddlewares();
     this.setupControllers();
     this.setupProtectedControllers();
+
+    this.app.use('*', (_, res) => res.status(501).send({ message: 'Method not implemented' }));
 
     this.server = this.app.listen(environments.PORT, () =>
       console.log(`Server is running on port ${environments.PORT}`)
@@ -46,7 +49,6 @@ class App {
         process.exit(0);
       });
     });
-
   }
 }
 
